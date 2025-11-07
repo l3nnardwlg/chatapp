@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatSphere · {{ username }}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        window.CHAT_CONFIG = {
+            username: {{ username|tojson }},
+            groups: {{ groups|tojson }},
+            friends: {{ friends|tojson }}
+        };
+    </script>
+</head>
+<body class="chat">
+    <div class="chat-shell">
+        <aside class="sidebar">
+            <div class="sidebar__header">
+                <h2>{{ username }}</h2>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <button type="submit" class="btn secondary">Log out</button>
+                </form>
+            </div>
+            <section class="sidebar__section">
+                <h3>Groups</h3>
+                <ul id="group-list"></ul>
+            </section>
+            <section class="sidebar__section">
+                <h3>Friends</h3>
+                <ul id="friend-list"></ul>
+                <div class="invite">
+                    <input id="invite-name" type="text" placeholder="Invite username">
+                    <button id="invite-btn" class="btn tertiary" type="button">Add</button>
+                </div>
+            </section>
+        </aside>
+        <main class="conversation">
+            <header class="conversation__header">
+                <h2 id="channel-title">Lobby</h2>
+                <span id="presence"></span>
+            </header>
+            <section id="messages" class="messages"></section>
+            <form id="composer" class="composer">
+                <input id="message-input" type="text" placeholder="Say something nice" autocomplete="off" required>
+                <button type="submit" class="btn primary">Send</button>
+            </form>
+        </main>
+    </div>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-5n0xGtIsfRSAxEPPYUajF1iGaGLjm+rXhN3kLBXjg5eQofCCRP4eAbOeXtfLOcA2" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>

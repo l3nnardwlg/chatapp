@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatSphere · Drop right in</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="landing">
+    <header class="hero">
+        <div class="hero__copy">
+            <h1>ChatSphere</h1>
+            <p>Join instant group hangouts, chat with friends, and keep track of who's online. No passwords—pick a username and jump right in.</p>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% if username %}
+                <form class="form" action="{{ url_for('chat') }}" method="get">
+                    <button type="submit" class="btn primary">Re-enter the chat</button>
+                </form>
+                <form class="form" action="{{ url_for('logout') }}" method="post">
+                    <button type="submit" class="btn secondary">Log out {{ username }}</button>
+                </form>
+            {% else %}
+                <form class="form" action="{{ url_for('login') }}" method="post">
+                    <label for="username">Choose a username</label>
+                    <input id="username" name="username" type="text" placeholder="e.g. skywalker" required minlength="2" maxlength="18">
+                    <button type="submit" class="btn primary">Enter ChatSphere</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="hero__illustration">
+            <div class="illustration-card">
+                <h2>Starter Pack</h2>
+                <ul>
+                    <li>Lobby group chat</li>
+                    <li>Curated friend suggestions</li>
+                    <li>Real-time typing + presence</li>
+                </ul>
+                <p class="small">Hosted on your Python server—just run and go.</p>
+            </div>
+        </div>
+    </header>
+    <footer class="footer">
+        <p>Run <code>python app.py</code> and start chatting on <code>0.0.0.0:5000</code>. Customize freely!</p>
+    </footer>
+</body>
+</html>
